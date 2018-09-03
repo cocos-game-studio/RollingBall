@@ -1,0 +1,63 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "ball-b-we",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.18333333333333332,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "props": {
+      "rotation": [
+        {
+          "frame": 0,
+          "value": -90
+        }
+      ]
+    },
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "95961043-c9cb-4d0f-981a-239ef3813f3d"
+            }
+          },
+          {
+            "frame": 0.03333333333333333,
+            "value": {
+              "__uuid__": "1700d2a8-3c95-4277-a91f-48459c99b4c4"
+            }
+          },
+          {
+            "frame": 0.06666666666666667,
+            "value": {
+              "__uuid__": "cadabcd7-dff1-4ece-8e13-4ae5f145a744"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "928421b0-72e5-4b51-acbc-fd00ea644284"
+            }
+          },
+          {
+            "frame": 0.13333333333333333,
+            "value": {
+              "__uuid__": "5f1ed699-aa6a-4838-a134-4cc4d0e91b6f"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "f2aa06a4-6e67-46dd-873a-0fbf177111b9"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

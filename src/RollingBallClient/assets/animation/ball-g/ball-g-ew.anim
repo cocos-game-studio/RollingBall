@@ -1,0 +1,63 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "ball-g-ew",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.18333333333333332,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "props": {
+      "rotation": [
+        {
+          "frame": 0,
+          "value": 90
+        }
+      ]
+    },
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "ada6927f-f3ee-4830-8c40-b0bbdfa1dcce"
+            }
+          },
+          {
+            "frame": 0.03333333333333333,
+            "value": {
+              "__uuid__": "915ac4e7-bb08-449d-b543-806e3d15f492"
+            }
+          },
+          {
+            "frame": 0.06666666666666667,
+            "value": {
+              "__uuid__": "7188bb07-55ff-4f5d-9385-d4f5d64a2ab0"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "bc8ada95-9f39-4dca-8797-0b098e834dd4"
+            }
+          },
+          {
+            "frame": 0.13333333333333333,
+            "value": {
+              "__uuid__": "46690791-53e6-448f-a193-7cd24723eda4"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "1047fa80-cb85-4e95-8388-0ad705ad2c52"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}
