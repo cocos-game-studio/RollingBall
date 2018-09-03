@@ -184,6 +184,9 @@
     "blockPrefab": {
       "__uuid__": "e10e6577-09bf-474e-9015-95bf1fe9370d"
     },
+    "ballPrefab": {
+      "__uuid__": "2107d098-8aa7-44c3-8469-51aca636351b"
+    },
     "straight": {
       "__uuid__": "8b8f0657-db67-446d-9ce7-ac5a67e7d579"
     },

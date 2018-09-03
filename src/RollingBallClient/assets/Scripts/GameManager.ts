@@ -16,10 +16,11 @@ const { ccclass, property } = cc._decorator;
 export default class GameManager extends cc.Component {
 
     @property(cc.Node)
-
     blockGrid: cc.Node = null;
     @property(cc.Prefab)
     blockPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    ballPrefab: cc.Prefab = null;
     @property(cc.SpriteFrame)
     straight: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
@@ -72,6 +73,8 @@ export default class GameManager extends cc.Component {
         block.isFinal = true;
 
         this.generateMap(blockList);
+
+        this.ballSchedule();
     }
     generateMap(nodeList: Array<Block>) {
         //生成node以及其属性
@@ -114,4 +117,10 @@ export default class GameManager extends cc.Component {
         }
         block.node.rotation = Math.floor(block.direct / 2) * 90;
     }
+    ballSchedule() {
+        this.schedule(() => {
+
+        }, 1);
+    }
+
 }
