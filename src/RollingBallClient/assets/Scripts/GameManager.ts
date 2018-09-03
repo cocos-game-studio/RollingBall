@@ -1,4 +1,4 @@
-import BlockNode from "./BlockNode";
+import { Block, Direction } from "./BlockNode";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,40 +15,112 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class GameManager extends cc.Component {
 
+    @property(cc.Node)
+    blockGrid: cc.Node = null;
+    @property(cc.Prefab)
+    blockPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    ballPrefab: cc.Prefab = null;
     @property(cc.SpriteFrame)
-    straight: cc.Prefab = null;
+    straight: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
-    winding: cc.Prefab = null;
+    winding: cc.SpriteFrame = null;
+    @property
+    length: number = 50;//边长
 
     start() {
         this.restart();
     }
 
     restart() {
-        this.generateMap();
+        var blockList: Array<Block> = [new Block, new Block, new Block, new Block, new Block, new Block];
+        var block = blockList[0];
+        block.direct = Direction.East;
+        block.x = 2;
+        block.y = 0;
+        block.nextNode = blockList[1];
+
+        block = blockList[1];
+        block.direct = Direction.East;
+        block.x = 1;
+        block.y = 0;
+        block.nextNode = blockList[2];
+
+        block = blockList[2];
+        block.direct = Direction.South;
+        block.switchDirect = Direction.North;
+        block.x = 0;
+        block.y = 0;
+        block.nextNode = blockList[3];
+        block.switchNode = blockList[4];
+
+        block = blockList[3];
+        block.direct = Direction.North;
+        block.x = 0;
+        block.y = 1;
+        block.nextNode = blockList[5];
+
+        block = blockList[4];
+        block.direct = Direction.South;
+        block.x = 0;
+        block.y = -1;
+        block.isFinal = true;
+
+        block = blockList[5];
+        block.direct = Direction.North;
+        block.x = 0;
+        block.y = 2;
+        block.isFinal = true;
+
+        this.generateMap(blockList);
+
+        this.ballSchedule();
     }
-    generateMap() {
-        for (let index = 0; index < 5; index++) {
-            const element = 5;
-            var node = this.createBlock(direct, nextNode);
-            if (isSwitch) {
-                node.on(cc.Event.TOUCH,()=>{
-                    node.switch();
-                })   
+    generateMap(nodeList: Array<Block>) {
+        //生成node以及其属性
+        for (let index = 0; index < nodeList.length; index++) {
+            const block = nodeList[index];
+            block.node = cc.instantiate(this.blockPrefab);
+            if (block.direct % 2 == 0) {
+                block.node.getComponent(cc.Sprite).spriteFrame = this.straight;
+
+            } else {
+                block.node.getComponent(cc.Sprite).spriteFrame = this.winding;
+            }
+            block.node.rotation = Math.floor(block.direct / 2) * 90;
+            this.blockGrid.addChild(block.node);
+            block.node.width = block.node.height = this.length;
+            block.node.x = this.length * block.x;
+            block.node.y = this.length * block.y;
+            //switch节点绑定事件
+            if (block.switchNode) {
+                block.node.on(cc.Node.EventType.TOUCH_END, () => {
+                    this.switchBlock(block);
+                })
             }
         }
     }
-    createBlock(nextNode?: BlockNode, direct?: string, isFinal?: boolean): BlockNode {
-        var node: BlockNode;
-        if (straight) {
-            node = <BlockNode>cc.instantiate(this.straight);
-        }
-        if (winding) {
-            node = <BlockNode>cc.instantiate(this.winding);
-        }
+    switchBlock(block: Block) {
+        var temp: any = block.nextNode;
+        block.nextNode = block.switchNode;
+        block.switchNode = temp;
 
-        node.isFinal = isFinal;
-        node.nextNode = nextNode;
-        return node;
+        temp = block.switchDirect;
+        block.switchDirect = block.direct;
+        block.direct = temp;
+        if (block.direct % 2 != block.switchDirect % 2) {
+            if (block.direct % 2 == 0) {
+                block.node.getComponent(cc.Sprite).spriteFrame = this.straight;
+            } else {
+                block.node.getComponent(cc.Sprite).spriteFrame = this.winding;
+            }
+        }
+        block.node.rotation = Math.floor(block.direct / 2) * 90;
     }
+    ballSchedule() {
+        this.schedule(() => {
+
+        }, 1);
+    }
+
 }
