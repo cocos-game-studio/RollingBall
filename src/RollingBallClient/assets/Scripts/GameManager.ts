@@ -1,4 +1,5 @@
 import { Block, Direction } from "./BlockNode";
+import Ball from "./Ball";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,6 +18,8 @@ export default class GameManager extends cc.Component {
 
     @property(cc.Node)
     blockGrid: cc.Node = null;
+    @property(cc.Node)
+    ballPool: cc.Node = null;
     @property(cc.Prefab)
     blockPrefab: cc.Prefab = null;
     @property(cc.Prefab)
@@ -38,27 +41,27 @@ export default class GameManager extends cc.Component {
         block.direct = Direction.East;
         block.x = 2;
         block.y = 0;
-        block.nextNode = blockList[1];
+        block.nextBlock = blockList[1];
 
         block = blockList[1];
         block.direct = Direction.East;
         block.x = 1;
         block.y = 0;
-        block.nextNode = blockList[2];
+        block.nextBlock = blockList[2];
 
         block = blockList[2];
-        block.direct = Direction.South;
-        block.switchDirect = Direction.North;
+        block.direct = Direction.SouthWest;
+        block.switchDirect = Direction.NorthWest;
         block.x = 0;
         block.y = 0;
-        block.nextNode = blockList[3];
-        block.switchNode = blockList[4];
+        block.nextBlock = blockList[3];
+        block.switchBlock = blockList[4];
 
         block = blockList[3];
         block.direct = Direction.North;
         block.x = 0;
         block.y = 1;
-        block.nextNode = blockList[5];
+        block.nextBlock = blockList[5];
 
         block = blockList[4];
         block.direct = Direction.South;
@@ -73,8 +76,7 @@ export default class GameManager extends cc.Component {
         block.isFinal = true;
 
         this.generateMap(blockList);
-
-        this.ballSchedule();
+        this.ballSchedule(blockList[0]);
     }
     generateMap(nodeList: Array<Block>) {
         //生成node以及其属性
@@ -93,7 +95,7 @@ export default class GameManager extends cc.Component {
             block.node.x = this.length * block.x;
             block.node.y = this.length * block.y;
             //switch节点绑定事件
-            if (block.switchNode) {
+            if (block.switchBlock) {
                 block.node.on(cc.Node.EventType.TOUCH_END, () => {
                     this.switchBlock(block);
                 })
@@ -101,9 +103,9 @@ export default class GameManager extends cc.Component {
         }
     }
     switchBlock(block: Block) {
-        var temp: any = block.nextNode;
-        block.nextNode = block.switchNode;
-        block.switchNode = temp;
+        var temp: any = block.nextBlock;
+        block.nextBlock = block.switchBlock;
+        block.switchBlock = temp;
 
         temp = block.switchDirect;
         block.switchDirect = block.direct;
@@ -117,10 +119,28 @@ export default class GameManager extends cc.Component {
         }
         block.node.rotation = Math.floor(block.direct / 2) * 90;
     }
-    ballSchedule() {
+    ballSchedule(first: Block) {
         this.schedule(() => {
-
-        }, 1);
+            var node: cc.Node = cc.instantiate(this.ballPrefab);
+            node.position = first.node.position;
+            node.getComponent(Ball).init(first, ballPool.put);
+            this.ballPool.addChild(node);
+            node.width = 40;
+            node.height = 40;
+            ballPool.pool.push(node);
+        }, 5);
     }
-
 }
+
+var ballPool = function () {
+    var pool: cc.Node[] = [];
+    return {
+        get: function () {
+
+        },
+        put: function () {
+
+        },
+        pool
+    }
+}()

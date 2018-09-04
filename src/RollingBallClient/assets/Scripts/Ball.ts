@@ -1,3 +1,5 @@
+import { Block } from "./BlockNode";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -14,14 +16,29 @@ const { ccclass, property } = cc._decorator;
 export default class Ball extends cc.Component {
 
     @property(cc.Color)
-    Color: cc.Color = null;
+    color: cc.Color = null;
+    @property
+    speed: number = 2;//走一格的时间
 
-    private currentNode;
+    private currentBlock: Block;
+    private anim: cc.AnimationState;
+    private destroyCallback: Function;
 
-    init(node: cc.Node) {
-        this.currentNode = node;
+    init(block: Block, destroyCallback: Function) {
+        this.currentBlock = block;
+        this.destroyCallback = destroyCallback;
     }
     update(dt) {
-
+        var v2: cc.Vec2 = this.node.position.sub(this.currentBlock.nextBlock.node.position);
+        if (v2.mag() > 1) {
+            v2 = this.node.position.lerp(this.currentBlock.nextBlock.node.position, this.speed);
+        } else if (!this.currentBlock.isFinal) {
+            this.currentBlock = this.currentBlock.nextBlock;
+        } else {
+            this.destroy();
+        }
+    }
+    onDestroy() {
+        this.destroyCallback(this);
     }
 }

@@ -19,10 +19,13 @@
     "_components": [
       {
         "__id__": 2
+      },
+      {
+        "__id__": 3
       }
     ],
     "_prefab": {
-      "__id__": 3
+      "__id__": 4
     },
     "_id": "",
     "_opacity": 255,
@@ -87,12 +90,29 @@
     "_atlas": null
   },
   {
+    "__type__": "a40afQ2YflDEYj0+CXwValF",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "color": {
+      "__type__": "cc.Color",
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 255
+    },
+    "speed": 10
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "2107d098-8aa7-44c3-8469-51aca636351b"
     },
     "fileId": "041ZR65AxO6owohxCd0Yo0",
     "sync": false

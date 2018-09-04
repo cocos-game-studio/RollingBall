@@ -1,7 +1,7 @@
 class Block {
     node: cc.Node;
-    nextNode: Block;
-    switchNode: Block;
+    nextBlock: Block;
+    switchBlock: Block;
     direct: Direction;
     switchDirect?: Direction;
     isFinal: boolean;
@@ -10,14 +10,14 @@ class Block {
 }
 //直走向以West为基准角度，曲走向以SouthEast为基准角度
 enum Direction {
-    West,
-    SouthWest,
-    South,
-    SouthEast,
     East,
-    NorthEast,
-    North,
+    SouthEast,
+    South,
+    SouthWest,
+    West,
     NorthWest,
+    North,
+    NorthEast,
 }
 export {
     Block,
