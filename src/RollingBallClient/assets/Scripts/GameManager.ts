@@ -24,12 +24,24 @@ export default class GameManager extends cc.Component {
     blockPrefab: cc.Prefab = null;
     @property(cc.Prefab)
     ballPrefab: cc.Prefab = null;
+
+    @property(cc.SpriteFrame)
+    startPoint: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
     straight: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
     winding: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    destinationBlue: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    destinationRed: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    destinationGreen: cc.SpriteFrame = null;
+
     @property
     length: number = 50;//边长
+    @property
+    speed: number = 25;//边长
 
     start() {
         this.restart();
@@ -38,20 +50,20 @@ export default class GameManager extends cc.Component {
     restart() {
         var blockList: Array<Block> = [new Block, new Block, new Block, new Block, new Block, new Block];
         var block = blockList[0];
-        block.direct = Direction.East;
+        block.direct = Direction.West;
         block.x = 2;
         block.y = 0;
         block.nextBlock = blockList[1];
 
         block = blockList[1];
-        block.direct = Direction.East;
+        block.direct = Direction.West;
         block.x = 1;
         block.y = 0;
         block.nextBlock = blockList[2];
 
         block = blockList[2];
-        block.direct = Direction.SouthWest;
-        block.switchDirect = Direction.NorthWest;
+        block.direct = Direction.NorthEast;//180
+        block.switchDirect = Direction.SouthEast;//90
         block.x = 0;
         block.y = 0;
         block.nextBlock = blockList[3];
@@ -83,13 +95,15 @@ export default class GameManager extends cc.Component {
         for (let index = 0; index < nodeList.length; index++) {
             const block = nodeList[index];
             block.node = cc.instantiate(this.blockPrefab);
+            var sprite: cc.Sprite = block.node.getComponent(cc.Sprite);
             if (block.direct % 2 == 0) {
-                block.node.getComponent(cc.Sprite).spriteFrame = this.straight;
+                sprite.spriteFrame = this.straight;
 
             } else {
-                block.node.getComponent(cc.Sprite).spriteFrame = this.winding;
+                sprite.spriteFrame = this.winding;
             }
-            block.node.rotation = Math.floor(block.direct / 2) * 90;
+            sprite.trim = false;
+            block.node.rotation = Math.floor(block.direct / 2) * 90;//旋转block
             this.blockGrid.addChild(block.node);
             block.node.width = block.node.height = this.length;
             block.node.x = this.length * block.x;
@@ -120,10 +134,10 @@ export default class GameManager extends cc.Component {
         block.node.rotation = Math.floor(block.direct / 2) * 90;
     }
     ballSchedule(first: Block) {
-        this.schedule(() => {
+        this.scheduleOnce(() => {
             var node: cc.Node = cc.instantiate(this.ballPrefab);
             node.position = first.node.position;
-            node.getComponent(Ball).init(first, ballPool.put);
+            node.getComponent(Ball).init(first, this.length, this.speed, ballPool.put);
             this.ballPool.addChild(node);
             node.width = 40;
             node.height = 40;
