@@ -17,25 +17,41 @@ export default class Ball extends cc.Component {
 
     @property(cc.Color)
     color: cc.Color = null;
-    @property
-    speed: number = 2;//走一格的时间
+
+    private speed: number;//走一格的时间
+    private length: number;//边长
 
     private currentBlock: Block;
+    private targetBlock: Block;
+
     private anim: cc.AnimationState;
     private destroyCallback: Function;
 
-    init(block: Block, destroyCallback: Function) {
+    private span: number = 0;//相对于currentBlock的距离
+
+    init(block: Block, length: number, speed: number, destroyCallback: Function) {
         this.currentBlock = block;
+        this.length = length;
+        this.speed = speed;
         this.destroyCallback = destroyCallback;
     }
-    update(dt) {
-        var v2: cc.Vec2 = this.node.position.sub(this.currentBlock.nextBlock.node.position);
-        if (v2.mag() > 1) {
-            v2 = this.node.position.lerp(this.currentBlock.nextBlock.node.position, this.speed);
-        } else if (!this.currentBlock.isFinal) {
-            this.currentBlock = this.currentBlock.nextBlock;
+    update(dt: number) {
+        if (this.currentBlock.isFinal) {
+            this.node.destroy();
+        } else if (this.span < this.length) {
+            if (this.span < this.length / 2) {
+                this.targetBlock = this.currentBlock.nextBlock;
+            }
+            //到下一个节点的向量
+            var v2: cc.Vec2 = this.targetBlock.node.position.sub(this.currentBlock.node.position);
+            this.span += v2.mul(dt / this.length * this.speed).mag();
+
+            var ratio = this.span / this.length;
+            var span = v2.mul(ratio);
+            this.node.position = this.currentBlock.node.position.clone().add(span);
         } else {
-            this.destroy();
+            this.currentBlock = this.targetBlock;
+            this.span = 0;
         }
     }
     onDestroy() {
