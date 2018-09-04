@@ -1,5 +1,6 @@
 import { Block, Direction } from "./BlockNode";
 import Ball from "./Ball";
+import BlockGenerator from "./BlockGenerator";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,7 +37,7 @@ export default class GameManager extends cc.Component {
     }
 
     restart() {
-        var blockList: Array<Block> = [new Block, new Block, new Block, new Block, new Block, new Block];
+        /*var blockList: Array<Block> = [new Block, new Block, new Block, new Block, new Block, new Block];
         var block = blockList[0];
         block.direct = Direction.East;
         block.x = 2;
@@ -74,9 +75,11 @@ export default class GameManager extends cc.Component {
         block.x = 0;
         block.y = 2;
         block.isFinal = true;
+        */
 
-        this.generateMap(blockList);
-        this.ballSchedule(blockList[0]);
+        var start:Block = BlockGenerator.generateBlock();
+        this.generateMap(BlockGenerator.getFullNodeList());
+        this.ballSchedule(start);
     }
     generateMap(nodeList: Array<Block>) {
         //生成node以及其属性
