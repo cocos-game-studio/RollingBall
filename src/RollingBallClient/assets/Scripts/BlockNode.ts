@@ -1,4 +1,15 @@
 class Block {
+
+    constructor(direct:Direction,switchDirect:Direction,isFinal:boolean,x:number,y:number){
+        this.direct=direct;
+        this.isFinal=isFinal;
+        this.switchDirect=switchDirect;
+        this.x=x;
+        this.y=y;
+        this.switchBlock=null;
+        this.nextBlock=null;
+    }
+
     node: cc.Node;
     nextBlock: Block;
     switchBlock: Block;

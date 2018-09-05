@@ -1,6 +1,7 @@
 import { Block, Direction } from "./BlockNode";
 import Ball from "./Ball";
 import BlockGenerator from "./BlockGenerator";
+import BlockManager from "./BlockManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -89,9 +90,34 @@ export default class GameManager extends cc.Component {
         block.isFinal = true;
         */
 
-        var start:Block = BlockGenerator.generateBlock();
-        this.generateMap(BlockGenerator.getFullNodeList());
-        this.ballSchedule(start);
+
+       var arr= [ 
+        ["0","0","0","0","0","0","0","0","0" ],
+        ["0","0","D","0","0","0","0","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","S(NS,WE)","WE","WE","WE","AB","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","S(NS,WE)","WE","WE","WE","AR","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","NS","0","0","0","0","0","0" ],
+        ["0","0","AG","0","0","0","0","0","0" ],
+        ["0","0","0","0","0","0","0","0","0" ],
+        ["0","0", "0", "0","0","0","0","0","0" ]
+    ];
+    //测试
+    var h=BlockManager.genLinkBlockList(arr);
+    this.generateMap(BlockManager.blockList);
+    this.ballSchedule(h);
+    console.log(h);
+
+        // var start:Block = BlockGenerator.generateBlock();
+        // this.generateMap(BlockGenerator.getFullNodeList());
+        // this.ballSchedule(start);
     }
     generateMap(nodeList: Array<Block>) {
         //生成node以及其属性
@@ -109,8 +135,8 @@ export default class GameManager extends cc.Component {
             block.node.rotation = Math.floor(block.direct / 2) * 90;//旋转block
             this.blockGrid.addChild(block.node);
             block.node.width = block.node.height = this.length;
-            block.node.x = this.length * block.x;
-            block.node.y = this.length * block.y;
+            block.node.x = this.length * block.x-100;
+            block.node.y = this.length * block.y-200;
             //switch节点绑定事件
             if (block.switchBlock) {
                 block.node.on(cc.Node.EventType.TOUCH_END, () => {
