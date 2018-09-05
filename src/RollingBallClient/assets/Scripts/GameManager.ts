@@ -136,7 +136,7 @@ export default class GameManager extends cc.Component {
             this.blockGrid.addChild(block.node);
             block.node.width = block.node.height = this.length;
             block.node.x = this.length * block.x-100;
-            block.node.y = this.length * block.y-200;
+            block.node.y = -this.length * block.y+300;
             //switch节点绑定事件
             if (block.switchBlock) {
                 block.node.on(cc.Node.EventType.TOUCH_END, () => {
