@@ -103,6 +103,7 @@ export default class BlockManager {
 
     private static fillMaps(){
         // level 1
+        this.maps = [];
         this.maps.push([ 
             ["0","0","0","0","0","0","0","0","0" ],
             ["0","0","D","0","0","0","0","0","0" ],
