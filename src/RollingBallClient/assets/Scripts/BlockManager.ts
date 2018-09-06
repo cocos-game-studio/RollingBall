@@ -10,7 +10,7 @@ export default class BlockManager {
     private static blockList: Array<Block>;
 
     public static genLinkBlockList(lvl:number): Block[] {
-        if(this.maps.length == 0){
+        if(this.maps == null || this.maps.length == 0){
             this.fillMaps();
         }
 
